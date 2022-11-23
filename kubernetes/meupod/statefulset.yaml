@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-statefulset
+  labels:
+    app: meunginx
+    cliente: weslley
+spec: #nivel 1 espec
+  selector:
+    matchLabels: #metch em todos componentes com os labels. todos os pods criados na replica procuram essas chaves valor
+      app: meunginx
+      cliente: weslley
+  serviceName: webserver
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: meunginx
+        cliente: weslley
+    spec: #nivel 2 espec do template de pods
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: webserver
+        image: nginx
+        ports:
+        - name: webports
+        - containerPort: 81
+        volumeMounts:
+        - name: www
+          mountPath: /usu/share/nginx/html
+  volumeClaimTemplates: #locais onde os pods solicitam espaco para o volume
+  - metadata:
+      name: www
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: standard #verificar os existentes
+      resources:
+        requests:
+          storage: 1Gi #para cada pod
+      

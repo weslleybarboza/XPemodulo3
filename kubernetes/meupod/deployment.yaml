@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: meunginx
+    cliente: weslley
+spec: #nivel 1 espec do deployment
+  replicas: 2 #utilizado para escalar
+  selector:
+    matchLabels: #metch em todos componentes com os labels. todos os pods criados na replica procuram essas chaves valor
+      app: meunginx
+      cliente: weslley
+  template:
+    metadata:
+      labels:
+        app: meunginx
+        cliente: weslley
+    spec: #nivel 2 espec do template de pods
+      containers:
+      - name: webserver
+        image: nginx
+        ports:
+        - containerPort: 80
+      

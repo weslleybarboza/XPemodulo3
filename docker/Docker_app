@@ -1,7 +1,12 @@
-FROM python:3.7-slim
+FROM python:3.8-slim
 
 RUN pip install pandas
 
 COPY run.py /run.py
+COPY entrypoint.sh /entrypoint.sh
 
-CMD python /run.py
+# transforma o entrypoint em um executavel
+RUN chmod +x /entrypoint.sh 
+
+# executa o arquivo
+CMD /entrypoint.sh

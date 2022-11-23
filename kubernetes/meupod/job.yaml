@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: readpandas
+spec:
+  backoffLimit: 1 #qnt de erros até considerar como falha
+  activeDeadlineSeconds: 60 #limite max de segundos para ser executado-apos erro de timeout - usado para SLA
+  template:
+    spec:
+      containers:
+      - name: readshow
+        image: weslleybarboza/jobpython:runjob
+        env:  #var ambiente configmap - vira uma variavel de ambiente dentro do container
+          - name: MINHA_VAR
+            valueFrom:
+              configMapKeyRef:
+                name: ambiente
+                key: minha_var
+        command: ["python", "-c", "import os; print(os.environ['MINHA_VAR'])","python", "/run.py",] #lista de strings
+      restartPolicy: Never #havera alguma politica de reestart? nao.
