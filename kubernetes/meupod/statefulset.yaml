@@ -24,7 +24,7 @@ spec: #nivel 1 espec
         image: nginx
         ports:
         - name: webports
-        - containerPort: 81
+          containerPort: 80
         volumeMounts:
         - name: www
           mountPath: /usu/share/nginx/html
